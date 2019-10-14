@@ -7,4 +7,6 @@ namespace Tarifhaus\Doctrine\ORM\NullableEmbeddable;
 interface EvaluatorInterface
 {
     public function isNull($object, $property): bool;
+
+    public function getValue($object, $property);
 }
