@@ -39,11 +39,24 @@ final class NullableEmbeddableListener
     public function postLoad($object)
     {
         $entity = get_class($object);
-        if (empty($this->propertyMap[$entity])) {
+        $classes = [$entity] + class_parents($object);
+        $entries = null;
+
+        foreach ($classes as $class) {
+            if (!empty($this->propertyMap[$class])) {
+                $entries = $this->propertyMap[$class];
+                break;
+            }
+        }
+
+        if (null === $entries) {
             return;
         }
 
-        $entries = $this->propertyMap[$entity];
+        if (! empty($this->propertyMap[get_class($embeddable)])) {
+            $this->postLoad($embeddable);
+        }
+
         foreach ($entries as $property) {
             if ($this->evaluator->isNull($object, $property)) {
                 $this->nullator->setNull($object, $property);
