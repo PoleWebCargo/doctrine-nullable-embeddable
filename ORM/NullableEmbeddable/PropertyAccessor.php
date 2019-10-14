@@ -36,4 +36,9 @@ final class PropertyAccessor implements EvaluatorInterface, NullatorInterface
     {
         $this->propertyAccessor->setValue($object, $property, null);
     }
+
+    public function getValue($object, $property)
+    {
+        return $this->propertyAccessor->getValue($object, $property);
+    }
 }

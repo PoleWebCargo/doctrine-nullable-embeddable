@@ -53,13 +53,14 @@ final class NullableEmbeddableListener
             return;
         }
 
-        if (! empty($this->propertyMap[get_class($embeddable)])) {
-            $this->postLoad($embeddable);
-        }
-
         foreach ($entries as $property) {
             if ($this->evaluator->isNull($object, $property)) {
                 $this->nullator->setNull($object, $property);
+            } else {
+                $embeddable = $this->evaluator->getValue($object, $property);
+                if (! empty($this->propertyMap[get_class($embeddable)])) {
+                    $this->postLoad($embeddable);
+                }
             }
         }
     }
